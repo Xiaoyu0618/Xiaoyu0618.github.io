@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xiaoyu Li</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            font-size: 20px;
+            line-height: 1.47059;
+            font-weight: 400;
+            letter-spacing: -0.022em;
+        }
+
+        nav {
+            background-color: #000000;
+            padding: 0 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .nav-left {
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 22px;
+            transition: opacity 0.3s;
+            letter-spacing: -0.01em;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        .main-title {
+            font-size: 65px;
+            text-align: center;
+            margin: 40px 0 30px;
+            color: #1d1d1f;
+            font-weight: 700;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .intro-text {
+            font-size: 26px;
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto 30px;
+            line-height: 1.5;
+            color: #1d1d1f;
+            padding: 0 20px;
+        }
+
+        .slideshow-container {
+            max-width: 700px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .slide {
+            display: none;
+            text-align: center;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide img {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            user-select: none;
+            background: rgba(0,0,0,0.5);
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .next {
+            right: 15px;
+        }
+
+        .prev {
+            left: 15px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+            width: 55px;
+            height: 55px;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .dots {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #1d1d1f;
+        }
+
+        .image-title {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0 10px;
+            color: #1d1d1f;
+        }
+
+        .image-subtitle {
+            font-size: 16px;
+            text-align: center;
+            color: #6e6e73;
+            margin-bottom: 30px;
+        }
+
+        .video-button {
+            display: block;
+            width: 300px;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background-color: #000000;
+            color: #ffffff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .video-button:hover {
+            background-color: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 100px 20px;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        footer {
+            background-color: #f5f5f7;
+            padding: 20px;
+            text-align: center;
+            color: #6e6e73;
+            font-size: 12px;
+            border-top: 1px solid #d2d2d7;
+        }
+
+        h1 {
+            font-size: 35px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -0.015em;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.47059;
+            color: #1d1d1f;
+            letter-spacing: -0.022em;
+        }
+
+        /* Home Page Styles */
+        .home-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .home-header {
+            margin-top: 60px;
+        }
+
+        .home-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .home-section-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .home-section-content {
+            font-size: 20px;
+            line-height: 1.5;
+            color: #1d1d1f;
+        }
+
+        /* 响应式设计 */
+        @media screen and (max-width: 768px) {
+            .nav-container {
+                height: 50px;
+            }
+
+            .nav-left {
+                font-size: 26px;
+            }
+
+            .nav-link {
+                font-size: 18px;
+            }
+
+            .main-title {
+                font-size: 46px;
+                margin: 30px 0 20px;
+            }
+
+            .intro-text {
+                font-size: 26px;
+                margin-bottom: 20px;
+            }
+
+            .prev, .next {
+                padding: 10px;
+                font-size: 18px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .nav-container {
+                height: 45px;
+            }
+
+            .nav-left {
+                font-size: 22px;
+            }
+
+            .nav-link {
+                font-size: 16px;
+            }
+
+            .main-title {
+                font-size: 36px;
+                margin: 25px 0 15px;
+            }
+
+            .intro-text {
+                font-size: 22px;
+            }
+
+            .video-button {
+                width: 250px;
+                font-size: 18px;
+            }
+        }
+
+        /* People Page Styles */
+        .people-container {
+            display: flex;
+            gap: 40px;
+            margin-top: 0px;
+        }
+
+        .people-left {
+            flex: 80;
+            text-align: justify;
+        }
+
+        .people-right {
+            flex: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .profile-image {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .contact-info a {
+            color: #0066cc;
+            text-decoration: none;
+            display: block;
+            margin: 8px 0;
+            transition: color 0.3s;
+            font-size: 18px;
+        }
+
+        .contact-info a:hover {
+            color: #004499;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 30px 0 15px;
+            color: #1d1d1f;
+        }
+
+        .section-content {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .education-item {
+            margin-bottom: 10px;
+        }
+
+        .research-link {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .research-link:hover {
+            color: #004499;
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 768px) {
+            .people-container {
+                flex-direction: column-reverse;
+            }
+
+            .people-left, .people-right {
+                flex: 1;
+                width: 100%;
+            }
+
+            .profile-image {
+                max-width: 250px;
+            }
+        }
+
+        /* Research Page Styles */
+        .research-project {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 60px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .research-image {
+            flex: 45;
+            min-width: 0;
+        }
+
+        .research-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .research-content {
+            flex: 55;
+            min-width: 0;
+        }
+
+        .research-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 20px;
+        }
+
+        .research-description {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #424245;
+            text-align: justify;
+        }
+
+        @media screen and (max-width: 768px) {
+            .research-project {
+                flex-direction: column;
+                padding: 20px;
+                margin-bottom: 50px;
+            }
+
+            .research-image, .research-content {
+                flex: 1;
+                width: 100%;
+            }
+
+            .research-title {
+                font-size: 28px;
+                margin-bottom: 15px;
+            }
+
+            .research-description {
+                font-size: 20px;
+            }
+        }
+
+        /* Publication Page Styles */
+        .publication-section {
+            margin-bottom: 50px;
+        }
+
+        .publication-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d2d2d7;
+        }
+
+        .publication-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .publication-item {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #1d1d1f;
+            text-align: justify;
+        }
+
+        .publication-item a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .publication-item a:hover {
+            text-decoration: underline;
+        }
+
+        .author-highlight {
+            font-weight: 700;
+        }
+
+        @media screen and (max-width: 768px) {
+            .publication-section h2 {
+                font-size: 28px;
+                margin-bottom: 20px;
+            }
+
+            .publication-item {
+                font-size: 16px;
+            }
+        }
+
+        /* Data/Codes Page Styles */
+        .data-section {
+            margin-bottom: 50px;
+        }
+
+        .data-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d2d2d7;
+        }
+
+        .data-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .data-item {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #1d1d1f;
+            text-align: justify;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+
+        .data-item a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .data-item a:hover {
+            text-decoration: underline;
+        }
+
+        .author-highlight {
+            font-weight: 700;
+        }
+
+        @media screen and (max-width: 768px) {
+            .data-section h2 {
+                font-size: 28px;
+                margin-bottom: 20px;
+            }
+
+            .data-item {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-left">Xiaoyu Li</div>
+            <div class="nav-right">
+                <a href="#" class="nav-link" data-section="home">Home</a>
+                <a href="#" class="nav-link" data-section="people">People</a>
+                <a href="#" class="nav-link" data-section="research">Research</a>
+                <a href="#" class="nav-link" data-section="publication">Publication</a>
+                <a href="#" class="nav-link" data-section="data">Data/Codes</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="active">
+        <div class="content">
+            <h1 class="main-title">Welcome to My Homepage</h1>
+            <p class="intro-text">I am Xiaoyu, a young researcher passionate about <strong>environmental monitoring</strong>, <strong>UAV remote sensing</strong>, and <strong>land use classification</strong>.</p>
+            
+            <div class="slideshow-container">
+                <a class="prev" onclick="changeSlide(-1)">❮</a>
+                <a class="next" onclick="changeSlide(1)">❯</a>
+                
+                <div class="slide active">
+                    <img src="web1.JPG" alt="Tibetan Plateau Landscape 1">
+                </div>
+                <div class="slide">
+                    <img src="web2.JPG" alt="Tibetan Plateau Landscape 2">
+                </div>
+                <div class="slide">
+                    <img src="web3.JPG" alt="Tibetan Plateau Landscape 3">
+                </div>
+                <div class="slide">
+                    <img src="web4.JPG" alt="Tibetan Plateau Landscape 4">
+                </div>
+                <div class="slide">
+                    <img src="web5.JPG" alt="Tibetan Plateau Landscape 5">
+                </div>
+                <div class="slide">
+                    <img src="web6.JPG" alt="Tibetan Plateau Landscape 6">
+                </div>
+                <div class="slide">
+                    <img src="web7.JPG" alt="Tibetan Plateau Landscape 7">
+                </div>
+                <div class="dots">
+                    <span class="dot active" data-index="0"></span>
+                    <span class="dot" data-index="1"></span>
+                    <span class="dot" data-index="2"></span>
+                    <span class="dot" data-index="3"></span>
+                    <span class="dot" data-index="4"></span>
+                    <span class="dot" data-index="5"></span>
+                    <span class="dot" data-index="6"></span>
+                </div>
+            </div>
+            
+            <h2 class="image-title">Beautiful landscapes in the northeastern Tibetan Plateau</h2>
+            <p class="image-subtitle">Photos taken by Xiaoyu during the 2022 Tibetan Plateau Scientific Expedition</p>
+            
+            <a href="https://mp.weixin.qq.com/s/TzPD1lfx3kdQQh1Tp1dzYw" class="video-button" target="_blank">
+                Watch My Video
+            </a>
+        </div>
+    </section>
+
+    <section id="people">
+        <div class="content">
+            <div class="people-container">
+                <div class="people-left">
+                    <h2 class="section-title">Biography</h2>
+                    <p class="section-content">
+                        Xiaoyu Li is a senior undergraduate majoring in Soil and Water Conservation and Desertification Combating at Beijing Forestry University. My research experience includes developing ultra-high-resolution land use datasets from drone imagery using machine learning algorithms, as well as monitoring and predicting vegetation dynamics and ecosystem health through multiple remote sensing sources and modeling approaches. I have actively participated in five national research projects, including the Second Tibetan Plateau Scientific Expedition and Research Program. To date, I have published three first-author papers and released two open-access datasets. Two additional manuscripts are currently under review. These experiences have provided me with a strong foundation in remote sensing, ecology, and UAV. I have also developed strong skills in data collection, analysis, and visualization, with proficiency in ArcGIS Pro, GEE, Python, R and so on. Beyond academic research, I have co-authored a book, contributed to a scientific atlas, published a popular science article, and created a science outreach video showcasing aerial imagery of the Tibetan Plateau.
+                    </p>
+
+                    <h2 class="section-title">Education Background</h2>
+                    <div class="section-content">
+                        <div class="education-item">2025.09 - 2026.06, The Hong Kong University of Science and Technology (Guangzhou), Research Assistant</div>
+                        <div class="education-item">2025.03 - 2025.08, The Hong Kong University of Science and Technology (Guangzhou), Visiting Student</div>
+                        <div class="education-item">2021.09 - 2025.06, Beijing Forestry University, BSc</div>
+                    </div>
+
+                    <h2 class="section-title">Research Interests</h2>
+                    <p class="section-content">
+                        I'm interested in a combination of multiple remote sensing sources and artificial intelligence to identify and address ecological and environmental issues in particular the following topics (but not limited to):<br><br>
+                        • Remote sensing image algorithm<br>
+                        • Environmental monitoring (vegetation dynamics and ecosystem health)<br>
+                        • UAV remote sensing<br>
+                        • Land use/ Land cover classification and prediction<br><br>
+                        A full publication list is available on <a href="#" class="research-link" data-section="publication">Publication</a> and <a href="#" class="research-link" data-section="data">Data/Codes</a>.
+                    </p>
+                </div>
+                <div class="people-right">
+                    <img src="self.JPG" alt="Xiaoyu Li" class="profile-image">
+                    <div class="contact-info">
+                        <a href="mailto:xiaoyu6936@gmail.com">xiaoyu6936@gmail.com</a>
+                        <a href="https://scholar.google.com/citations?user=mwJKoHkAAAAJ&hl=zh-CN&authuser=1" target="_blank">Google Scholar</a>
+                        <a href="https://orcid.org/0009-0006-8962-024X" target="_blank">ORCID</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="research">
+        <div class="content">
+            <div class="research-project">
+                <div class="research-image">
+                    <img src="S1-village.jpg" alt="Rural human living environment research">
+                </div>
+                <div class="research-content">
+                    <h2 class="research-title">Rural human living environment</h2>
+                    <p class="research-description">
+                        Using satellite and UAV remote sensing data combined with objective statistical datasets, we constructed a multi-dimensional assessment framework for evaluating rural human settlement environments in the Tibetan Plateau. Validated by villager satisfaction surveys, this study demonstrates the feasibility and advantages of multi-source data approaches, providing a scientific foundation for settlement improvement and revitalization projects in high-altitude areas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="research-project">
+                <div class="research-image">
+                    <img src="S2-LULC.jpg" alt="Village-scale land use composition research">
+                </div>
+                <div class="research-content">
+                    <h2 class="research-title">Village-scale land use composition</h2>
+                    <p class="research-description">
+                        We employed object-based segmentation and machine learning algorithms to classify ultra-high-resolution UAV imagery collected from villages. This study provides unprecedented large-sample, high-accuracy land use data for villages in high-altitude regions. We analyzed the land use composition, influencing factors, and spatial patterns of these villages, offering valuable insights for land-use optimization and rural revitalization strategies. Additionally, based on this dataset, we assessed the extent and spatial distribution of village green spaces in 2022. Utilizing the GEE platform, we analyzed temporal trends in green land from the past 23 years and identified potential areas for improvement using multivariate regression models incorporating natural and socioeconomic factors. This represents the first comprehensive, village-scale green land study on the Tibetan Plateau, providing guidance for planning.
+                    </p>
+                </div>
+            </div>
+
+            <div class="research-project">
+                <div class="research-image">
+                    <img src="S3-VOR.png" alt="Ecosystem health research">
+                </div>
+                <div class="research-content">
+                    <h2 class="research-title">Ecosystem health</h2>
+                    <p class="research-description">
+                        We used the Vigor-Organization-Resilience (VOR) model to assess ecosystem health changes on the Tibetan Plateau from 1980 to 2020. Based on CA-Markov model predictions of 2030 vegetation cover and land use, we forecast future ecosystem health trends. The results offer scientific support for ecological monitoring, land-use planning, and policy-making in the region.
+                    </p>
+                </div>
+            </div>
+
+            <div class="research-project">
+                <div class="research-image">
+                    <img src="S4-NDVI.png" alt="Vegetation dynamics research">
+                </div>
+                <div class="research-content">
+                    <h2 class="research-title">Vegetation dynamics</h2>
+                    <p class="research-description">
+                        Using a comprehensive set of influencing factors, combined with Mann-Kendall trend tests and Geographical Detector analysis, we examined spatiotemporal changes in vegetation over the past 20 years and identified key driving factors. This approach addresses previous limitations in using single methods or individual factors when examining vegetation NDVI in high-altitude human settlements, providing scientific evidence to support ecological improvement efforts in northeastern Tibetan Plateau.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="publication">
+        <div class="content">
+            <div class="publication-section">
+                <h2>Under Review</h2>
+                <div class="publication-list">
+                    <div class="publication-item">
+                        <span class="author-highlight">Xiaoyu Li</span>, Zhongbao Xin, Feng Lin. Comprehensive Assessment of Human Settlement Environment based on multiple data sources in the Hehuang Valley [J]. Journal of Cleaner Production. (Ready to Submit)
+                    </div>
+                    <div class="publication-item">
+                        <span class="author-highlight">Xiaoyu Li</span>, Zhongbao Xin. Village Green Land in Hehuang Valley, Northeastern Tibetan Plateau: Proportions, Influencing Factors, and Potential for Improvement [J]. Landscape Ecology. (Under Second Review)
+                    </div>
+                </div>
+            </div>
+
+            <div class="publication-section">
+                <h2>Published</h2>
+                <div class="publication-list">
+                    <div class="publication-item">
+                        Junliu Yang, Zhongbao Xin, <span class="author-highlight">Xiaoyu Li</span>, Xiaoyu Liang. Vigor-Organization-Resilience Framework for Assessing Ecosystem Health in the Qinghai-Xizang Plateau [J]. Ecosystem Health and Sustainability. 2024, 10, 0206. <a href="https://doi.org/10.34133/ehs.0260" target="_blank">https://doi.org/10.34133/ehs.0260</a>
+                    </div>
+                    <div class="publication-item">
+                        <span class="author-highlight">Xiaoyu Li</span>, Zhongbao Xin. Land-Use Composition, Distribution Patterns, and Influencing Factors of Villages in the Hehuang Valley, Qinghai, China, Based on UAV Photogrammetry [J]. Remote Sensing. 2024, 16, 2213. <a href="https://doi.org/10.3390/rs16122213" target="_blank">https://doi.org/10.3390/rs16122213</a>
+                    </div>
+                    <div class="publication-item">
+                        <span class="author-highlight">Li Xiaoyu</span>, Xin Zhongbao, Yang Junliu, Liu Jinhao. The Spatiotemporal Changes and Influencing Factors of Vegetation NDVI in the Hehuang Valley of Qinghai Province from 2000 to 2020 [J]. Journal of Soil and Water Conservation, 2024, 38(01): 79-90+103. (in Chinese)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="data">
+        <div class="content">
+            <div class="data-section">
+                <h2>Data</h2>
+                <div class="data-list">
+                    <div class="data-item">
+                        <strong>Xiaoyu Li</strong>, Zhongbao Xin. Typical Village UAV Aerial Photography Dataset in northeastern Tibetan Plateau (2022). Zenodo, 2024. <a href="https://doi.org/10.5281/zenodo.13732126" target="_blank">https://doi.org/10.5281/zenodo.13732126</a>
+                    </div>
+                    <div class="data-item">
+                        <strong>Xiaoyu Li</strong>, Zhongbao Xin. Ultra-high Resolution Land Use Data Set of Typical Villages in Northeastern Tibetan Plateau. Zenodo, 2024. <a href="https://doi.org/10.5281/zenodo.13732109" target="_blank">https://doi.org/10.5281/zenodo.13732109</a>
+                    </div>
+                    <div class="data-item">
+                        Zhongbao Xin., <strong>Xiaoyu Li</strong>. (2024). Typical village UAV aerial photography dataset in Hehuang Valley, Qinghai (2022). National Tibetan Plateau / Third Pole Environment Data Center. <a href="https://data.tpdc.ac.cn/zh-hans/data/0ac5ac75-2c5a-4b1f-a32f-58e7eac72316" target="_blank">https://data.tpdc.ac.cn/zh-hans/data/0ac5ac75-2c5a-4b1f-a32f-58e7eac72316</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h2>Codes</h2>
+                <div class="data-list">
+                    <div class="data-item">
+                        Obtain MODIS 250 m NDVI data and calculate interannual variations: 
+                        <a href="https://code.earthengine.google.com/18d3633ec7365322b306f32bf2988567" target="_blank">View Code on Google Earth Engine</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 Xiaoyu Li. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Hide all sections
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+
+                    // Show the selected section
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+
+            // 图片轮播功能
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            let currentSlide = 0;
+
+            window.showSlide = function(index) {
+                if (index >= slides.length) index = 0;
+                if (index < 0) index = slides.length - 1;
+                
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            window.changeSlide = function(direction) {
+                showSlide(currentSlide + direction);
+            }
+
+            // 点击小圆点切换图片
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    showSlide(index);
+                });
+            });
+
+            // 自动播放
+            function nextSlide() {
+                changeSlide(1);
+            }
+
+            // 每5秒自动切换图片
+            setInterval(nextSlide, 5000);
+        });
+    </script>
+</body>
+</html> 
